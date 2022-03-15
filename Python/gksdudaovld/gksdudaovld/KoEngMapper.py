@@ -122,8 +122,10 @@ def split_ko(string):
             bot_idx = hex_zeropoint % 28
 
             separated.append((top_idx, mid_idx, bot_idx))
-        else:  # 12593~12643
+        elif 12593 <= hexcode <= 12643:
             separated.append([hexcode])
+        else:
+            separated.append(str(c))
 
     return separated
 
@@ -176,12 +178,16 @@ def conv_en2ko(string):
             if char_capsule[1] == " " or char_capsule[1].isdigit() or (not char_capsule[1].encode().isalpha()):
                 converted_string += char_capsule[1]
                 break
+            if len(char_group) == 1:
+                converted_string += chr(raw_mapper.index(char_capsule[1])+12593)
+                break
             if char_capsule[0] == 0:
                 top_idx = ko_top_en.index(char_capsule[1])
             elif char_capsule[0] == 1:
                 mid_idx = ko_mid_en.index(char_capsule[1])
             elif char_capsule[0] == 2:
                 bot_idx = ko_bot_en.index(char_capsule[1])
+
         else:
             converted_string += chr((top_idx * 21 * 28 + mid_idx * 28 + bot_idx) + 44032)
     return converted_string
@@ -199,10 +205,10 @@ def conv_ko2en(string):
     converted_string = ''
     for idx_group in idx_groups:
         for idx_capsule in enumerate(idx_group):
-            if idx_capsule[1] == " " or 12593 <= ord(idx_capsule[1]) <= 12643:  # ㄱ ~ ㅣ
+            if idx_capsule[1] == " " or type(idx_capsule[1]) is not int:
                 converted_string += idx_capsule[1]
                 continue
-            elif idx_capsule[1] >= 12593:
+            elif 12593 <= idx_capsule[1] <= 12643:
                 converted_string += raw_mapper[idx_capsule[1] - 12593]
                 continue
             if idx_capsule[0] == 0:
