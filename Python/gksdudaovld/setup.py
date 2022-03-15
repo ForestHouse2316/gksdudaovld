@@ -7,8 +7,8 @@ setup(name='gksdudaovld',
       author_email='foresthouse2316@gmail.com',
       url='https://github.com/ForestHouse2316/gksdudaovld',
       license='MIT',
-      py_modules=['KoEngMapper'],
+      py_modules=['gksdudaovld'],
       python_requires='>=3',
       install_requires=[],
-      packages=['KoEngMapper']
+      packages=['gksdudaovld']
       )
