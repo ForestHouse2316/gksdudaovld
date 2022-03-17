@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/ForestHouse2316/gksdudaovld/main/Document/logo.png" height="250px"/> <br>
   <img src="https://img.shields.io/badge/License-MIT-yellow" /></a> <br>
-  <img src="https://img.shields.io/badge/Python-1.0.3-brightgreen" /></a>
+  <img src="https://img.shields.io/badge/Python-1.0.4-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Java-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/C++-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/JavaScript-unsupported-red" /></a>
