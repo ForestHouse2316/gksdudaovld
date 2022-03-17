@@ -71,8 +71,17 @@ def split_en(string):
                         combination += 'b'
                         attachment3 = is_attach_available(string[current_idx + shift],
                                                           string[current_idx + shift + 1])
-                        if attachment3 == 5:  # 자 + 자 (종)
-                            combination += 'b'
+                        if attachment3 == 5:  # 자 + 자 (종) + ?
+                            if current_idx + shift + 2 == len(string):  # IndexOutOfRange
+                                combination += 'b'
+                            else:
+                                shift += 1
+                                attachment4 = is_attach_available(string[current_idx + shift],
+                                                                  string[current_idx + shift + 1])
+                                if attachment4 == 2:  # 자 + 자 + 모
+                                    pass
+                                else:  # 자 + 자 + 자 (다음)
+                                    combination += 'b'
                         elif attachment3 == 2:  # 자 + 모 (다음)
                             combination = combination[:-1]  # Remove 'b'
                         else:  # 단받침 / 자 + 자 (다음)
