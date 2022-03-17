@@ -1,6 +1,7 @@
 package gksdudaovld;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class KoEngMapper {
     public static final ArrayList<String> KO_TOP = new ArrayList<>(Arrays.asList("ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"));
@@ -23,7 +24,7 @@ public class KoEngMapper {
 
         int jump = 0;
         List<String[]> separated = new ArrayList<>();
-        String[] stringArr = (String[]) Arrays.asList(string.toString().toCharArray()).stream().map(e -> String.valueOf(e)).toArray();
+        String[] stringArr = (String[]) Stream.of(string.toString().toCharArray()).map(String::valueOf).toArray();
         for (int i = 0; i < stringArr.length; i++) {
             char currentChar = stringArr[i].charAt(0);
             int shift = 0;
