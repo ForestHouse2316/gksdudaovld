@@ -9,8 +9,12 @@ class SimpleTester:
         self.reverse = reverse_io
         self.log = ""
 
-    def set_method(self, method):
+    def change_method(self, method):
         self.method = method
+        return self
+
+    def clear_log(self):
+        self.log = ""
         return self
 
     def start(self):
