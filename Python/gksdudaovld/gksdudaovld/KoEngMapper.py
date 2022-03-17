@@ -66,22 +66,25 @@ def split_en(string):
                     if is_attach_available(string[current_idx + shift],
                                            string[current_idx + shift + 1]) == 4:  # 모 + 자
                         shift += 1
+                        # If this bottom character is last character of string, processes below will cause IndexError
+                        # So add 'b' first, and if it is wrong, delete it later
+                        combination += 'b'
                         attachment3 = is_attach_available(string[current_idx + shift],
                                                           string[current_idx + shift + 1])
                         if attachment3 == 5:  # 자 + 자 (종)
-                            combination += 'bb'
-                        elif attachment3 == 2:  # 자 + 모 (다음)
-                            pass
-                        else:  # 단받침 / 자 + 자 (다음)
                             combination += 'b'
-            except:
+                        elif attachment3 == 2:  # 자 + 모 (다음)
+                            combination = combination[:-1]  # Remove 'b'
+                        else:  # 단받침 / 자 + 자 (다음)
+                            pass
+            except IndexError:
                 pass
         if combination == "t":
             separated.append((string[current_idx]))
         elif combination == "tm":
             separated.append((string[current_idx], string[current_idx + 1]))
         elif combination == "tmm":
-            separated.append((string[current_idx], string[current_idx + 1: current_idx + 4]))
+            separated.append((string[current_idx], string[current_idx + 1: current_idx + 3]))
         elif combination == "tmb":
             separated.append((string[current_idx], string[current_idx + 1], string[current_idx + 2]))
         elif combination == "tmmb":
