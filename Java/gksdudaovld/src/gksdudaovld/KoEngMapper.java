@@ -23,9 +23,9 @@ public class KoEngMapper {
 
         int jump = 0;
         List<String[]> separated = new ArrayList<>();
-        char[] stringArr = string.toString().toCharArray();
+        String[] stringArr = (String[]) Arrays.asList(string.toString().toCharArray()).stream().map(e -> String.valueOf(e)).toArray();
         for (int i = 0; i < stringArr.length; i++) {
-            char currentChar = stringArr[i];
+            char currentChar = stringArr[i].charAt(0);
             int shift = 0;
             // TODO change this to integer to make process faster
             StringBuilder combination = new StringBuilder().append('t');
@@ -33,7 +33,7 @@ public class KoEngMapper {
                 jump -= 1;
                 continue;
             } else if (currentChar == ' ' || Character.isDigit(currentChar) || !Character.isLetter(currentChar)) {
-                separated.add(new String[]{String.valueOf(currentChar)});
+                separated.add(new String[]{stringArr[i]});
                 continue;
             } else {
                 try {
@@ -62,17 +62,12 @@ public class KoEngMapper {
                 }
             }
             switch (combination.toString()) {
-                case "t" -> separated.add(new String[]{String.valueOf(stringArr[i])});
-                case "tm" -> separated.add(new String[]{String.valueOf(stringArr[i]), String.valueOf(stringArr[i + 1])});
-                case "tmm" -> separated.add(new String[]{String.valueOf(stringArr[i]),
-                        String.valueOf(stringArr[i + 1] + stringArr[i + 2])});
-                case "tmb" -> separated.add(new String[]{String.valueOf(stringArr[i]),
-                        String.valueOf(stringArr[i + 1]), String.valueOf(stringArr[i + 2])});
-                case "tmmb" -> separated.add(new String[]{String.valueOf(stringArr[i]),
-                        String.valueOf(stringArr[i + 1] + stringArr[i + 2]), String.valueOf(stringArr[i + 2])});
-                case "tmmbb" -> separated.add(new String[]{String.valueOf(stringArr[i]),
-                        String.valueOf(stringArr[i + 1] + stringArr[i + 2]),
-                        String.valueOf(stringArr[i + 3] + stringArr[i + 4])});
+                case "t" -> separated.add(new String[]{stringArr[i]});
+                case "tm" -> separated.add(new String[]{stringArr[i], stringArr[i + 1]});
+                case "tmm" -> separated.add(new String[]{stringArr[i], stringArr[i + 1] + stringArr[i + 2]});
+                case "tmb" -> separated.add(new String[]{stringArr[i], stringArr[i + 1], stringArr[i + 2]});
+                case "tmmb" -> separated.add(new String[]{stringArr[i], stringArr[i + 1] + stringArr[i + 2], stringArr[i + 2]});
+                case "tmmbb" -> separated.add(new String[]{String.valueOf(stringArr[i]), stringArr[i + 1] + stringArr[i + 2], stringArr[i + 3] + stringArr[i + 4]});
             }
             jump = combination.length() - 1;
         }
@@ -80,11 +75,11 @@ public class KoEngMapper {
     }
 
 
-    static int isAttachable(char i, char l) {
+    static int isAttachable(String i, String l) {
         if (KO_TOP_EN.contains(String.valueOf(i)) && KO_MID_EN.contains(String.valueOf(l))) {return 2;}
-        else if (KO_MID_EN.contains(String.valueOf(i) + l)) {return 3;}
+        else if (KO_MID_EN.contains(i + l)) {return 3;}
         else if (KO_MID_EN.contains(String.valueOf(i)) && KO_BOT_EN.contains(String.valueOf(l))) {return 4;}
-        else if (KO_BOT_EN.contains(String.valueOf(i) + l)) {return 5;}
+        else if (KO_BOT_EN.contains(i + l)) {return 5;}
         else {return 0;}
     }
 
