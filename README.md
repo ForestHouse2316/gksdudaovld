@@ -8,7 +8,7 @@
 </p>
 
 # gksdudaovld 한영매핑
-Mapping program to convert between Korean and English in QWERTY keyboard\
+Mapping program to convert between Korean and English on QWERTY keyboard\
 QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다
 
 > 알쓸잡지식 : gksdudaovld 은 '한영매핑' 을 영어타자로 치면 나오는 글자입니다 :)\
