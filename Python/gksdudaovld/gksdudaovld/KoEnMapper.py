@@ -5,6 +5,7 @@ ko_pos - Korean characters' indexes
 ko_pos_en - English characters' indexes based on the Korean characters' position in QWERTY keyboard.
 en_lower_only - Upper cases that doesn't have any shifted Korean character in QWERTY keyboard.
 raw_mapper - English characters' indexes based on the Korean characters' unicode number.
+T / M / B - Filters to express combination of Korean characters
 """
 ko_top = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]  # 18
 ko_mid = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ",
@@ -25,6 +26,17 @@ raw_mapper = ["r", "R", "rt", "s", "sw", "sg", "e", "E", "f", "fr", "fa", "fq", 
               "Q", "qt", "t", "T", "d", "w", "W", "c", "z", "x", "v", "g", "k", "o", "i", "O", "j", "p", "u", "P",
               "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l"]
 
+T = 0xb_0001_0000
+M = 0xb_0000_0100
+B = 0xb_0000_0001
+TM = T+M
+TMM = T+M+M
+TMB = T+M+B
+TMMB = T+M+M+B
+TMBB = T+M+B+B
+TMMBB = T+M+M+B+B
+
+
 
 def split_en(string):
     """
@@ -44,7 +56,7 @@ def split_en(string):
     separated = []
     for capsule in enumerate(string):
         shift = 0
-        combination = "t"
+        combination = T
         current_idx = None
         if jump:
             jump -= 1
@@ -58,22 +70,22 @@ def split_en(string):
 
                 if is_attach_available(string[current_idx + shift], string[current_idx + shift + 1]) == 2:  # 자 + 모
                     shift += 1
-                    combination += 'm'
+                    combination += M
                     if is_attach_available(string[current_idx + shift],
                                            string[current_idx + shift + 1]) == 3:  # 모 + 모
                         shift += 1
-                        combination += 'm'
+                        combination += M
                     if is_attach_available(string[current_idx + shift],
                                            string[current_idx + shift + 1]) == 4:  # 모 + 자
                         shift += 1
                         # If this bottom character is last character of string, processes below will cause IndexError
                         # So add 'b' first, and if it is wrong, delete it later
-                        combination += 'b'
+                        combination += B
                         attachment3 = is_attach_available(string[current_idx + shift],
                                                           string[current_idx + shift + 1])
                         if attachment3 == 5:  # 자 + 자 (종) + ?
                             if current_idx + shift + 2 == len(string):  # IndexOutOfRange
-                                combination += 'b'
+                                combination += B
                             else:
                                 shift += 1
                                 attachment4 = is_attach_available(string[current_idx + shift],
@@ -81,28 +93,28 @@ def split_en(string):
                                 if attachment4 == 2:  # 자 + 자 + 모
                                     pass
                                 else:  # 자 + 자 + 자 (다음)
-                                    combination += 'b'
+                                    combination += B
                         elif attachment3 == 2:  # 자 + 모 (다음)
                             combination = combination[:-1]  # Remove 'b'
                         else:  # 단받침 / 자 + 자 (다음)
                             pass
             except IndexError:
                 pass
-        if combination == "t":
+        if combination == T:
             separated.append((string[current_idx]))
-        elif combination == "tm":
+        elif combination == TM:
             separated.append((string[current_idx], string[current_idx + 1]))
-        elif combination == "tmm":
+        elif combination == TMM:
             separated.append((string[current_idx], string[current_idx + 1: current_idx + 3]))
-        elif combination == "tmb":
+        elif combination == TMB:
             separated.append((string[current_idx], string[current_idx + 1], string[current_idx + 2]))
-        elif combination == "tmmb":
+        elif combination == TMMB:
             separated.append(
                 (string[current_idx], string[current_idx + 1: current_idx + 3], string[current_idx + 3]))
-        elif combination == "tmbb":
+        elif combination == TMBB:
             separated.append(
                 (string[current_idx], string[current_idx + 1], string[current_idx + 2: current_idx + 4]))
-        elif combination == "tmmbb":
+        elif combination == TMMBB:
             separated.append((string[current_idx], string[current_idx + 1: current_idx + 3],
                               string[current_idx + 3: current_idx + 5]))
         jump = len(combination) - 1
@@ -124,7 +136,7 @@ def split_ko(string):
     separated = []
     for c in string:
         if c == " ":
-            separated.append((" "))
+            separated.append(" ")
             continue
         hexcode = ord(c)
         if hexcode >= 44032:
