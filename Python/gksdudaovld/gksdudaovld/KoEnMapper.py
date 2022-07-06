@@ -35,7 +35,17 @@ TMB = T+M+B
 TMMB = T+M+M+B
 TMBB = T+M+B+B
 TMMBB = T+M+M+B+B
-
+comb_len = {
+    T: 1,
+    M: 1,
+    B: 1,
+    TM: 2,
+    TMM: 3,
+    TMB: 3,
+    TMMB: 4,
+    TMBB: 4,
+    TMMBB: 5,
+}
 
 
 def split_en(string):
@@ -95,7 +105,7 @@ def split_en(string):
                                 else:  # 자 + 자 + 자 (다음)
                                     combination += B
                         elif attachment3 == 2:  # 자 + 모 (다음)
-                            combination = combination[:-1]  # Remove 'b'
+                            combination -= B  # Remove 'b'
                         else:  # 단받침 / 자 + 자 (다음)
                             pass
             except IndexError:
@@ -117,7 +127,7 @@ def split_en(string):
         elif combination == TMMBB:
             separated.append((string[current_idx], string[current_idx + 1: current_idx + 3],
                               string[current_idx + 3: current_idx + 5]))
-        jump = len(combination) - 1
+        jump = comb_len[combination] - 1
     return separated
 
 
