@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='gksdudaovld',
-      version='1.0.6',
+      version='1.0.6b1',
       description='Mapping module for conversion between Korean and English',
       author='ForestHouse',
       author_email='foresthouse2316@gmail.com',
