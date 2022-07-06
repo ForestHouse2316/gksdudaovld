@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/ForestHouse2316/gksdudaovld/main/Document/logo.png" height="250px"/> <br>
   <img src="https://img.shields.io/badge/License-MIT-yellow" /></a> <br>
-  <img src="https://img.shields.io/badge/Python-1.0.5-brightgreen" /></a>
+  <img src="https://img.shields.io/badge/Python-1.0.6b1-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Java-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/C++-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/JavaScript-unsupported-red" /></a>
@@ -25,7 +25,7 @@ pip install gksdudaovld
 ```
 다음과 같이 import 하여 사용하면 됩니다
 ``` python
-from gksdudaovld import KoEngMapper
+from gksdudaovld import KoEnMapper
 ```
 
 ### Java
@@ -41,9 +41,9 @@ Unsupported
 
 ### Python
 ``` python
-from gksdudaovld import KoEngMapper
-KoEngMapper.conv_en2ko("dkssudgktpdyyyyyyyyy~!")
-KoEngMapper.conv_ko2en("ㅗ미ㅐ ㅛㅐㅕ 혀ㅛㄴ~!")
+from gksdudaovld import KoEnMapper
+KoEnMapper.conv_en2ko("dkssudgktpdyyyyyyyyy~!")
+KoEnMapper.conv_ko2en("ㅗ미ㅐ ㅛㅐㅕ 혀ㅛㄴ~!")
 ```
 ``` python
 >>> '안녕하세요ㅛㅛㅛㅛㅛㅛㅛㅛ~!'

@@ -6,4 +6,4 @@ Made by ForestHouse
 GitHub Repo : https://github.com/ForestHouse2316/gksdudaovld
 """
 
-__all__ = ['KoEngMapper']
+__all__ = ['KoEnMapper.py']
