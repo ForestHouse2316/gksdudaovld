@@ -2,9 +2,9 @@
   <img src="https://raw.githubusercontent.com/ForestHouse2316/gksdudaovld/main/Document/logo.png" height="250px"/> <br>
   <img src="https://img.shields.io/badge/License-MIT-yellow" /></a> <br>
   <img src="https://img.shields.io/badge/Python-1.0.6b1-brightgreen" /></a>
+  <img src="https://img.shields.io/badge/JavaScript-1.0.6b1.1-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Java-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/C++-unsupported-red" /></a>
-  <img src="https://img.shields.io/badge/JavaScript-unsupported-red" /></a>
 </p>
 
 # gksdudaovld 한영매핑
@@ -28,14 +28,26 @@ pip install gksdudaovld
 from gksdudaovld import KoEnMapper
 ```
 
+### JavaScript
+npm 을 통해 설치하게 됩니다.
+``` console
+npm i gksdudaovld
+```
+- ES6 방식 import 는 다음과 같습니다.
+    ``` JS
+    import { convEn2Ko, convKo2En } from "gksdudaovld";
+    ```
+- CommonJS 방식 import 는 다음과 같습니다.
+    ``` JS
+    const kem = require("gksdudaovld");
+    ```
+
 ### Java
 Unsupported
 
 ### C++
 Unsupported
 
-### JavaScript
-Unsupported
 
 ## Basic Usage
 
@@ -50,8 +62,16 @@ KoEnMapper.conv_ko2en("ㅗ미ㅐ ㅛㅐㅕ 혀ㅛㄴ~!")
 >>> 'halo you guys~!'
 ```
 
+### JavaScript
+``` JS
+console.log(convEn2Ko("dkssudgktpdy :)"));  // ES6
+console.log(kem.convKo2En("ㅗㅑ ㄷㅍㄷ교ㅐㅜㄷ :)"));  // CommonJS
+```
+``` JS
+>>> "안녕하세요 :)"
+>>> "hi everyone :)"
+```
+
 ### Java
 
 ### C++
-
-### JavaScript

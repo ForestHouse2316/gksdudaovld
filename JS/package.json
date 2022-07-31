@@ -1,0 +1,27 @@
+{
+  "name": "gksdudaovld",
+  "version": "1.0.6-beta.1.1",
+  "description": "Mapping program for conversion between KO-EN on QWERTY keyboard",
+  "main": "KoEnMapper.js",
+  "type": "module",
+  "scripts": {
+    "test": "KoEnMapper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForestHouse2316/gksdudaovld.git"
+  },
+  "keywords": [
+    "qwerty",
+    "Korean",
+    "English",
+    "mapping",
+    "converting"
+  ],
+  "author": "ForestHouse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ForestHouse2316/gksdudaovld/issues"
+  },
+  "homepage": "https://github.com/ForestHouse2316/gksdudaovld#readme"
+}
