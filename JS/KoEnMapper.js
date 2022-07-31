@@ -20,10 +20,10 @@ const TMBB = T + M + B + B;
 const TMMBB = T + M + M + B + B;
 const combLen = (bin) => {
     const getBit = (idx) => (bin >> (idx - 1)) & 1;
-    return getBit(1) + getBit(3) + getBit(5) + 2*(getBit(2) + getBit(4));
-}
-
-const isAlpha = (c) => /^[a-zA-Z]*$/.test(c);
+    return getBit(1) + getBit(3) + getBit(5) + 2 * (getBit(2) + getBit(4));
+};
+const isAlpha = (c) => /^[a-zA-Z]*$/.test(c); // strict alphabet checking
+const isDigit = (c) => /^[0-9]*$/.test(c);
 
 export const splitEn = (string) => {
     for (const c in EnLowerOnly) {
@@ -39,7 +39,7 @@ export const splitEn = (string) => {
         if (jump) {
             jump -= 1;
             continue;
-        } else if (! isAlpha(capsule[1])) {
+        } else if (!isAlpha(capsule[1])) {
             separated.push(capsule[1]);
             continue;
         } else {
@@ -107,17 +107,111 @@ export const splitEn = (string) => {
                 break;
             case TMMB:
                 separated.push([string[currentIdx], string[currentIdx + 1] + string[currentIdx + 2], string[currentIdx + 3]]);
+                break;
             case TMBB:
                 separated.push([string[currentIdx], string[currentIdx + 1], string[currentIdx + 2] + string[currentIdx + 3]]);
+                break;
             case TMMBB:
                 separated.push([string[currentIdx], string[currentIdx + 1] + string[currentIdx + 2], string[currentIdx + 3] + string[currentIdx + 4]]);
+                break;
         }
         jump = combLen(combination) - 1;
     }
     return separated;
 };
 
-function splitKo(string) {}
+export const splitKo = (string) => {
+    let separated = [];
+    for (let i = 0; i < string.length; i++) {
+        let c = string.charAt(i);
+        if (c === " ") {
+            separated.push(" ");
+            continue;
+        }
+        let hexcode = c.charCodeAt(0);
+        if (hexcode >= 44032) {
+            let hexZeropoint = hexcode - 44032;
+            let topIdx = parseInt(hexZeropoint / 28 / 21);
+            let midIdx = parseInt((hexZeropoint / 28) % 21);
+            let botIdx = parseInt(hexZeropoint % 28);
+
+            separated.push([topIdx, midIdx, botIdx]);
+        } else if (12593 <= hexcode && hexcode <= 12643) {
+            separated.push([hexcode]);
+        } else {
+            separated.push(c);
+        }
+    }
+    return separated;
+};
+
+export const convEn2Ko = (string) => {
+    let charGroups = splitEn(string);
+    let convertedString = "";
+    for (let charGroup of charGroups) {
+        let topIdx = 0;
+        let midIdx = 0;
+        let botIdx = 0;
+        let breaked = false;
+        for (let i = 0; i < charGroup.length; i++) {
+            let charCapsule = [i, charGroup[i]];
+            if (charCapsule[1] === " " || isDigit(charCapsule[1]) || !isAlpha(charCapsule[1])) {
+                convertedString += charCapsule[1];
+                breaked = true;
+                break;
+            }
+            if (charGroup.length == 1) {
+                convertedString += String.fromCharCode(RawMapper.indexOf(charCapsule[1]) + 12593);
+                breaked = true;
+                break;
+            }
+            switch (charCapsule[0]) {
+                case 0:
+                    topIdx = KoTopEn.indexOf(charCapsule[1]);
+                    break;
+                case 1:
+                    midIdx = KoMidEn.indexOf(charCapsule[1]);
+                    break;
+                case 2:
+                    botIdx = KoBotEn.indexOf(charCapsule[1]);
+                    break;
+            }
+        }
+        if (!breaked) {
+            convertedString += String.fromCharCode(topIdx * 21 * 28 + midIdx * 28 + botIdx + 44032);
+        }
+    }
+    return convertedString;
+};
+
+export const convKo2En = (string) => {
+    let idxGroups = splitKo(string);
+    let convertedString = "";
+    for (let idxGroup of idxGroups) {
+        for (let i = 0; i < idxGroup.length; i++) {
+            let idxCapsule = [i, idxGroup[i]];
+            if (typeof(idxCapsule[1]) != 'number') {
+                convertedString += idxCapsule[1];
+                continue;
+            } else if (12593 <= idxCapsule[1] && idxCapsule[1] <= 12643) {
+                convertedString += RawMapper[idxCapsule[1] - 12593];
+                continue;
+            }
+            switch (idxCapsule[0]) {
+                case 0:
+                    convertedString += KoTopEn[idxCapsule[1]];
+                    break;
+                case 1:
+                    convertedString += KoMidEn[idxCapsule[1]];
+                    break;
+                case 2:
+                    convertedString += KoBotEn[idxCapsule[1]];
+                    break;
+            }
+        }
+    }
+    return convertedString;
+};
 
 function isAttachable(i, l) {
     switch (true) {
@@ -127,15 +221,11 @@ function isAttachable(i, l) {
             return 3;
         case KoMidEn.indexOf(i) != -1 && KoBotEn.indexOf(l) != -1:
             return 4;
-        case KoBotEn.indexOf(i + l)!=-1:
+        case KoBotEn.indexOf(i + l) != -1:
             return 5;
     }
     return 0;
 }
-
-function convEn2Ko(string) {}
-
-function convKo2En(string) {}
 
 function print_bits(bitGroups) {
     for (const bitGroup in bitGroups) {

@@ -1,6 +1,6 @@
 {
   "name": "gksdudaovld",
-  "version": "1.0.6-beta.1",
+  "version": "1.0.6-beta.1.1",
   "description": "Mapping program for conversion between KO-EN on QWERTY keyboard",
   "main": "KoEnMapper.js",
   "type": "module",
@@ -15,7 +15,8 @@
     "qwerty",
     "Korean",
     "English",
-    "mapping"
+    "mapping",
+    "converting"
   ],
   "author": "ForestHouse",
   "license": "MIT",
