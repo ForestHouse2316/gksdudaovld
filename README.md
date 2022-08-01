@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/ForestHouse2316/gksdudaovld/main/Document/logo.png" height="250px"/> <br>
   <img src="https://img.shields.io/badge/License-MIT-yellow" /></a> <br>
   <img src="https://img.shields.io/badge/Python-1.0.6b1-brightgreen" /></a>
-  <img src="https://img.shields.io/badge/JavaScript-1.0.6b1.1-brightgreen" /></a>
+  <img src="https://img.shields.io/badge/JavaScript-1.0.6b2-brightgreen" /></a>
   <img src="https://img.shields.io/badge/Java-unsupported-red" /></a>
   <img src="https://img.shields.io/badge/C++-unsupported-red" /></a>
 </p>
@@ -65,6 +65,8 @@ KoEnMapper.conv_ko2en("ㅗ미ㅐ ㅛㅐㅕ 혀ㅛㄴ~!")
 ### JavaScript
 ``` JS
 console.log(convEn2Ko("dkssudgktpdy :)"));  // ES6
+
+// You can change the variable named "kem" as you declared at the import line.
 console.log(kem.convKo2En("ㅗㅑ ㄷㅍㄷ교ㅐㅜㄷ :)"));  // CommonJS
 ```
 ``` JS
