@@ -58,7 +58,7 @@ def split_en(string):
     And following this rule, each group means one character in Korean.
     If character is not an English, that'll be put in the list without any processing.
 
-    :returns: [[top, mid, bot], ..., [top, mid, bot]]
+    :returns: [[top, mid, bot], 'Korean', 'number', 'symbols', ... , [top, mid, bot]]
     """
     for c in en_lower_only:
         string = string.replace(c, c.lower())
@@ -71,14 +71,15 @@ def split_en(string):
         if jump:
             jump -= 1
             continue
-        elif capsule[1] == " " or capsule[1].isdigit() or (not capsule[1].isalpha()):
+        elif capsule[1] == " " or capsule[1].isdigit() or (not capsule[1].isalpha()):  # For fast-decision
             separated.append(capsule[1])
             continue
         else:
             try:
                 current_idx = capsule[0]
 
-                if is_attach_available(string[current_idx + shift], string[current_idx + shift + 1]) == 2:  # 자 + 모
+                if is_attach_available(string[current_idx + shift],
+                                       string[current_idx + shift + 1]) == 2:  # 자 + 모
                     shift += 1
                     combination += M
                     if is_attach_available(string[current_idx + shift],
@@ -141,7 +142,7 @@ def split_ko(string):
     If there is no final consonant, "" will be inserted instead. (its index number is 0)
     For example, "가" -> [0, 0, 0], "맵" -> [4, 1, 17]
 
-    :return: [[top_idx, mid_idx, bot_idx], ..., [top_idx, mid_idx, bot_idx]]
+    :return: [[topIdx, midIdx, botIdx], 'English', 'number', 'symbol', ... , [topIdx, midIdx, botIdx]]
     """
     separated = []
     for c in string:
@@ -170,7 +171,8 @@ def is_attach_available(i, l):
 
     Check the attach-ability for those two parameters.
 
-    :return: First Consonant + First Consonant => 1 (Not used)
+    :return: Unattachable => False
+    First Consonant + First Consonant => 1 (Not used)
     First Consonant + Vowel => 2
     Vowel + Vowel => 3
     Vowel + Final Consonant => 4
@@ -191,7 +193,7 @@ def is_attach_available(i, l):
     # 자 + 자 (종)
     if i + l in ko_bot_en:
         return 5
-    return 0
+    return False
 
 
 def conv_en2ko(string):
