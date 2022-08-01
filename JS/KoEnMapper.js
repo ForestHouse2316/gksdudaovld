@@ -1,3 +1,13 @@
+/**
+ * Constants
+ * 
+ * KO_POS - Korean characters' indexes
+ * KO_POS_EN - English characters' indexes based on the Korean characters' position in QWERTY keyboard.
+ * EN_LOWER_ONLY - Upper cases that doesn't have any shifted Korean character in QWERTY keyboard.
+ * RAW_MAPPER - English characters' indexes based on the Korean characters' unicode number.
+ * T / M / B - Filters to express combination of Korean characters
+ */
+
 const KO_TOP = ["ㄱ", "ㄲ", "ㄴ", "ㄷ", "ㄸ", "ㄹ", "ㅁ", "ㅂ", "ㅃ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅉ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]; // 18
 const KO_MID = ["ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ", "ㅔ", "ㅕ", "ㅖ", "ㅗ", "ㅘ", "ㅙ", "ㅚ", "ㅛ", "ㅜ", "ㅝ", "ㅞ", "ㅟ", "ㅠ", "ㅡ", "ㅢ", "ㅣ"]; // 21
 const KO_BOT = ["", "ㄱ", "ㄲ", "ㄳ", "ㄴ", "ㄵ", "ㄶ", "ㄷ", "ㄹ", "ㄺ", "ㄻ", "ㄼ", "ㄽ", "ㄾ", "ㄿ", "ㅀ", "ㅁ", "ㅂ", "ㅄ", "ㅅ", "ㅆ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]; // 28K
@@ -25,15 +35,28 @@ const TMB = T + M + B;
 const TMMB = T + M + M + B;
 const TMBB = T + M + B + B;
 const TMMBB = T + M + M + B + B;
+
+/**
+ * 
+ * @param {number} bin
+ * @returns Return the Korean character's length in the view of english character. (e.g. T -> 1, TMMBB -> 5)
+ */
 const combLen = (bin) => {
     const getBit = (idx) => (bin >> (idx - 1)) & 1;
     return getBit(1) + getBit(3) + getBit(5) + 2 * (getBit(2) + getBit(4));
 };
-
 const isAlpha = (c) => /^[a-zA-Z]*$/.test(c); // strict alphabet checking
 const isDigit = (c) => /^[0-9]*$/.test(c);
 
-
+/**
+ *  Split English words based on Korean.
+ * Return a list containing groups that have a set of Korean.
+ * For example, ['r', 'k'] for '가', ['a', 'o', 'q'] for '맵'.
+ * And following this rule, each group means one character in Korean.
+ * If character is not an English, that'll be put in the list without any processing.
+ * @param {string} string 
+ * @returns [[top, mid, bot], 'Korean', 'number', 'symbols', ... , [top, mid, bot]]
+ */
 export const splitEn = (string) => {
     for (const c in EN_LOWER_ONLY) {
         string = string.replace(c, c.toLowerCase());
@@ -128,7 +151,15 @@ export const splitEn = (string) => {
     }
     return separated;
 };
-
+/**
+ * Disassemble Korean character.
+ * In Korean, up to three Korean characters can be assembled into one character.
+ * This method disassembles it, convert them to an index number of QWERTY keyboard map list, and finally put them into the list.
+ * If there is no final consonant, "" will be inserted instead. (its index number is 0)
+ * For example, "가" -> [0, 0, 0], "맵" -> [4, 1, 17]
+ * @param {string} string 
+ * @returns [[topIdx, midIdx, botIdx], 'English', 'number', 'symbol', ... , [topIdx, midIdx, botIdx]]
+ */
 export const splitKo = (string) => {
     let separated = [];
     for (let i = 0; i < string.length; i++) {
@@ -153,7 +184,11 @@ export const splitKo = (string) => {
     }
     return separated;
 };
-
+/**
+ * Convert English characters to Korean characters.
+ * @param {string} string 
+ * @returns String (Korean)
+ */
 export const convEn2Ko = (string) => {
     let charGroups = splitEn(string);
     let convertedString = "";
@@ -193,6 +228,12 @@ export const convEn2Ko = (string) => {
     return convertedString;
 };
 
+
+/**
+ * Convert Korean characters to English characters.
+ * @param {string} string 
+ * @returns String (English)
+ */
 export const convKo2En = (string) => {
     let idxGroups = splitKo(string);
     let convertedString = "";
@@ -223,6 +264,23 @@ export const convKo2En = (string) => {
 };
 
 
+
+/**
+ * Check the attach-ability for those two parameters.
+ * @param {string} i 
+ * @param {string} l 
+ * @returns Unattachable => false
+ * 
+ * First Consonant + First Consonant => 1 (Not used)
+ * 
+ * First Consonant + Vowel => 2
+ * 
+ * Vowel + Vowel => 3
+ * 
+ * Vowel + Final Consonant => 4
+ * 
+ * Final Consonant + Final Consonant => 5
+ */
 function isAttachable(i, l) {
     switch (true) {
         case KO_TOP_EN.indexOf(i) != -1 && KO_MID_EN.indexOf(l) != -1:
@@ -234,7 +292,7 @@ function isAttachable(i, l) {
         case KO_BOT_EN.indexOf(i + l) != -1:
             return BB;
     }
-    return 0;
+    return false;
 }
 
 function print_bits(bitGroups) {
