@@ -2,3 +2,13 @@
 /Python/dist
 /Python/gksdudaovld.egg-info
 test.py
+.idea/gksdudaovld.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+Python/gksdudaovld/gksdudaovld/__pycache__/__init__.cpython-310.pyc
+Python/gksdudaovld/gksdudaovld/__pycache__/KoEnMapper.cpython-310.pyc
+.idea/.gitignore
+JS/test.js
