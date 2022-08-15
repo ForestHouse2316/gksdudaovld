@@ -9,7 +9,7 @@
 
 # gksdudaovld 한영매핑
 Mapping program to convert between Korean and English on QWERTY keyboard\
-QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다
+QWERTY 키보드용 한국어/영어 간 매핑 프로그램입니다\
 ```
 gkssudgktpdy => 안녕하세요
 ```
@@ -52,6 +52,7 @@ Unsupported
 ### C++
 Unsupported
 
+## [Changelog](https://github.com/ForestHouse2316/gksdudaovld/blob/main/Changelog.md)
 
 ## Basic Usage
 
